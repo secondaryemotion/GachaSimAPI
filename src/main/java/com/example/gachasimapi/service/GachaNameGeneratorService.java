@@ -5,6 +5,7 @@ import NameGenerator.DatabaseManager.DatabaseRequester;
 import NameGenerator.*;
 import com.example.gachasimapi.api.model.GachaName;
 import com.example.gachasimapi.api.model.GachaNamePart;
+import com.example.gachasimapi.api.model.NamePart;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -31,25 +32,23 @@ public class GachaNameGeneratorService {
     }
 
     public GachaName getGachaName() throws SQLException {
-        GachaName name = new GachaName(generator.generateName());
-        return name;
+        return new GachaName(generator.generateName());
     }
 
-    public ArrayList<GachaNamePart> getAllParts(String part) {
+    public ArrayList<GachaNamePart> getAllParts(NamePart part) {
         String[] parts = getRepositoryByType(part).getAllValues();
         ArrayList<GachaNamePart> list = new ArrayList<>();
         for (String name: parts){
-            list.add(new GachaNamePart(name,part));
+            list.add(new GachaNamePart(name,part.toString()));
         }
         return list;
     }
 
-    public NamePartRepository getRepositoryByType(String part) {
+    public NamePartRepository getRepositoryByType(NamePart part) {
         return switch (part) {
-            case "color" -> colorRepository;
-            case "quality" -> qualityRepository;
-            case "noun" -> nounRepository;
-            default ->  throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            case color -> colorRepository;
+            case quality -> qualityRepository;
+            case noun -> nounRepository;
         };
     }
 

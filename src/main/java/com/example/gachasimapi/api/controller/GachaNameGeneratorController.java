@@ -2,6 +2,7 @@ package com.example.gachasimapi.api.controller;
 
 import com.example.gachasimapi.api.model.GachaName;
 import com.example.gachasimapi.api.model.GachaNamePart;
+import com.example.gachasimapi.api.model.NamePart;
 import com.example.gachasimapi.service.GachaNameGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +26,13 @@ public class GachaNameGeneratorController {
     }
 
     @GetMapping("/all")
-    public ArrayList<GachaNamePart> getAllParts(String part) {
+    public ArrayList<GachaNamePart> getAllParts(NamePart part) {
         return gachaNameGeneratorService.getAllParts(part);
     }
 
     @PostMapping("/create")
     public void createValue(@RequestBody GachaNamePart newNamePart){
-        gachaNameGeneratorService.createValue(new GachaNamePart(newNamePart.getName(),newNamePart.getType()));
+        gachaNameGeneratorService.createValue(new GachaNamePart(newNamePart));
     }
 
     @PutMapping("/replace")
@@ -40,7 +41,7 @@ public class GachaNameGeneratorController {
     }
 
     @DeleteMapping("/delete")
-    public void deletevalue(@RequestBody GachaNamePart namePart){
+    public void deleteValue(@RequestBody GachaNamePart namePart){
         gachaNameGeneratorService.deletevalue(namePart);
     }
 }
